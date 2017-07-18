@@ -1,0 +1,68 @@
+﻿{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Positionen{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        {{ utils.flashed_messages() }}
+        <br/>
+        <h1 style="text-align:center;">Positionen</h1>
+        {% if positionen %}
+          <hr class="intro-divider">
+          <div class="center">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="15%"> Position </th>
+                  <th width="50%"> Beschreibung </th>
+                  <th width="15%"> Spieler Anzahl </th>
+                  <th width="15%"> Bearbeiten </th>
+                  <th width="15%"> Entfernen </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for position in positionen %}
+                <tr>
+                  <td> {{ position.name }} </td>
+                  <td> {{ position.description }} </td>
+                  <td>
+                    {% if position.spieler %}
+                      {{ position.spieler.count() }}
+                    {% else %}
+                      0
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.edit_position', id=position.id) }}">
+                      <i class="fa fa-pencil"></i> Bearbeiten
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.delete_position', id=position.id) }}">
+                      <i class="fa fa-trash"></i> Entfernen
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3> Es wurden noch keine Positionen angelegt. </h3>
+            <hr class="intro-divider">
+        {% endif %}
+          <a href="{{ url_for('admin.add_position') }}" class="btn btn-default btn-lg">
+            <i class="fa fa-plus"></i>
+            Position hinzufuegen
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

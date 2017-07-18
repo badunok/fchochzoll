@@ -1,0 +1,76 @@
+﻿{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Spielers{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        {{ utils.flashed_messages() }}
+        <br/>
+        <h1 style="text-align:center;">Spieler</h1>
+        {% if spielers %}
+          <hr class="intro-divider">
+          <div class="center">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="30%"> Name </th>
+                  <th width="30%"> Mannschaft </th>
+                  <th width="20%"> Position </th>
+                  <th width="15%"> Zuweisen </th>
+                  <th width="15%"> Entfernen </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for spieler in spielers %}
+                {% if spieler.is_admin %}
+                    <tr> 
+                        <style>
+                        <td> {visibility: collapse;}<i class="fa fa-key"></i> Admin </td>
+                        <td> {visibility: collapse;} </td>
+                        <td> N/A </td>
+                        <td> N/A </td>
+			</style>
+                    </tr>
+                {% else %}
+                    <tr>
+                      <td> {{ spieler.vorname }} {{ spieler.nachname }} </td>
+                      <td>
+                        {% if spieler.mannschaft %}
+                          {{ spieler.mannschaft.name }}
+                        {% else %}
+                          -
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if spieler.position %}
+                          {{ spieler.position.name }}
+                        {% else %}
+                          -
+                        {% endif %}
+                      </td>
+                      <td>
+                        <a href="{{ url_for('admin.assign_spieler', id=spieler.id) }}">
+                          <i class="fa fa-user-plus"></i> Zuweisen
+                        </a>
+                      </td>
+                      <td>
+                        <a href="{{ url_for('admin.delete_spieler', id=spieler.id) }}">
+                          <i class="fa fa-trash"></i> Entfernen
+                        </a>
+                      </td>
+                    </tr>
+                {% endif %}
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

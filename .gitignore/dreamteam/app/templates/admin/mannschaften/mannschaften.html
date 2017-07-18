@@ -1,0 +1,68 @@
+﻿{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}Mannschaften{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br/>
+        {{ utils.flashed_messages() }}
+        <br/>
+        <h1 style="text-align:center;">Mannschaften</h1>
+        {% if mannschaften %}
+          <hr class="intro-divider">
+          <div class="center">
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th width="15%"> Name </th>
+                  <th width="40%"> Liga </th>
+                  <th width="15%"> Spieler Anzahl </th>
+                  <th width="15%"> Bearbeiten </th>
+                  <th width="15%"> Entfernen </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for mannschaft in mannschaften %}
+                <tr>
+                  <td> {{ mannschaft.name }} </td>
+                  <td> {{ mannschaft.description }} </td>
+                  <td>
+                    {% if mannschaft.spieler %}
+                      {{ mannschaft.spieler.count() }}
+                    {% else %}
+                      0
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.edit_mannschaft', id=mannschaft.id) }}">
+                      <i class="fa fa-pencil"></i> Bearbeiten
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{{ url_for('admin.delete_mannschaft', id=mannschaft.id) }}">
+                      <i class="fa fa-trash"></i> Entfernen
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div style="text-align: center">
+        {% else %}
+          <div style="text-align: center">
+            <h3> Es gibt noch keine Mannschaften. </h3>
+            <hr class="intro-divider">
+        {% endif %}
+          <a href="{{ url_for('admin.add_mannschaft') }}" class="btn btn-default btn-lg">
+            <i class="fa fa-plus"></i>
+            Mannschaft hinzufuegen
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
